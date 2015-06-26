@@ -1,0 +1,9 @@
+[alias]
+	br = branch
+	co = commit
+	st = status
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+[core]
+	editor = emacs
+[credential]
+	helper = cache
