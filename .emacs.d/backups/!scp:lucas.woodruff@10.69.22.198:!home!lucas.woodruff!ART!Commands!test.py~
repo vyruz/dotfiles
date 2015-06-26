@@ -1,7 +1,0 @@
-import psycopg2 
-
-DB_NAME = "art_dev"
-USERNAME = "postgres"
-PASSWORD = "secret"
-HOSTNAME = "10.69.22.199"
-

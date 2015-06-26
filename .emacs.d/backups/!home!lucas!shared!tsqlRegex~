@@ -1,6 +1,0 @@
-1> select Identifier from alerts.status where Identifier = '.*omnibus.*';
-2> go
-Identifier
-
-
-1> select '^Alert.*' from alerts.status;
