@@ -1,0 +1,107 @@
+Ran 1 test in 0.027s
+
+FAILED (errors=1)
+[lucas.woodruff@intern01 workbench]$ nosetests tests/test_consumer_producer.py 
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.303s
+
+OK
+[lucas.woodruff@intern01 workbench]$ nosetests tests/test_consumer_producer.py 
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.292s
+
+OK
+[lucas.woodruff@intern01 workbench]$ 
+[lucas.woodruff@intern01 workbench]$ nosetests tests/test_consumer_producer.py 
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.296s
+
+OK
+[lucas.woodruff@intern01 workbench]$ nosetests tests/test_consumer_producer.py 
+E
+======================================================================
+ERROR: test_consumer_producer.test_produce_consume
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/nose/case.py", line 197, in runTest
+    self.test(*self.arg)
+  File "/home/lucas.woodruff/workbench/tests/test_consumer_producer.py", line 14, in test_produce_consume
+    c.getConsumer().seek(0,2) # skip all pending messages and start reading only new messages
+  File "/usr/lib/python2.7/site-packages/kafka/consumer/simple.py", line 174, in seek
+    resps = self.client.send_offset_request(reqs)
+  File "/usr/lib/python2.7/site-packages/kafka/client.py", line 457, in send_offset_request
+    KafkaProtocol.decode_offset_response)
+  File "/usr/lib/python2.7/site-packages/kafka/client.py", line 202, in _send_broker_aware_request
+    raise FailedPayloadsError(failed_payloads)
+FailedPayloadsError: [OffsetRequest(topic='testingTopic', partition=1, time=-1, max_offsets=1), OffsetRequest(topic='testingTopic', partition=4, time=-1, max_offsets=1), OffsetRequest(topic='testingTopic', partition=7, time=-1, max_offsets=1)]
+-------------------- >> begin captured stdout << ---------------------
+in test_produce_consume
+
+--------------------- >> end captured stdout << ----------------------
+-------------------- >> begin captured logging << --------------------
+kafka: DEBUG: Reinitializing socket connection for 10.69.22.152:9092
+kafka: DEBUG: About to send 30 bytes to Kafka, request 0
+kafka: DEBUG: Reading response 0 from Kafka
+kafka: DEBUG: About to read 4 bytes from Kafka
+kafka: DEBUG: Read 4/4 bytes from Kafka
+kafka: DEBUG: About to read 13333 bytes from Kafka
+kafka: DEBUG: Read 4096/13333 bytes from Kafka
+kafka: DEBUG: Read 8192/13333 bytes from Kafka
+kafka: DEBUG: Read 12288/13333 bytes from Kafka
+kafka: DEBUG: Read 13333/13333 bytes from Kafka
+kafka: DEBUG: Broker metadata: [BrokerMetadata(nodeId=2, host='kafka-idb03.dev.viasatcloud.com', port=9092), BrokerMetadata(nodeId=1, host='kafka-idb02.dev.viasatcloud.com', port=9092), BrokerMetadata(nodeId=0, host='kafka-idb01.dev.viasatcloud.com', port=9092)]
+kafka: DEBUG: Topic metadata: [TopicMetadata(topic='consumerTesting', error=0, partitions=[PartitionMetadata(topic='consumerTesting', partition=2, leader=0, replicas=(0, 2), isr=(0, 2), error=0), ......
+kafka: DEBUG: Reinitializing socket connection for 10.69.22.152:9092
+kafka: DEBUG: About to send 30 bytes to Kafka, request 1
+kafka: DEBUG: Reading response 1 from Kafka
+kafka: DEBUG: About to read 4 bytes from Kafka
+kafka: DEBUG: Read 4/4 bytes from Kafka
+kafka: DEBUG: About to read 13333 bytes from Kafka
+kafka: DEBUG: Read 4096/13333 bytes from Kafka
+kafka: DEBUG: Read 8192/13333 bytes from Kafka
+kafka: DEBUG: Read 12288/13333 bytes from Kafka
+kafka: DEBUG: Read 13333/13333 bytes from Kafka
+kafka: DEBUG: Broker metadata: [BrokerMetadata(nodeId=2, host='kafka-idb03.dev.viasatcloud.com', port=9092), BrokerMetadata(nodeId=1, host='kafka-idb02.dev.viasatcloud.com', port=9092), BrokerMetadata(nodeId=0, host='kafka-idb01.dev.viasatcloud.com', port=9092)]
+kafka: DEBUG: Topic metadata: [TopicMetadata(topic='consumerTesting', error=0, partitions=[PartitionMetadata(topic='consumerTesting', partition=2, leader=0, replicas=(0, 2), isr=(0, 2), error=0), PartitionMetadata(topic='consumerTesting', partition=5, leader=0, replicas=(0, 1), isr=(0, 1), error=0), PartitionMetadata(topic='consumerTesting', partition=4, leader=2, replicas=(2, 0), isr=(2, 0), error=0).......
+kafka: DEBUG: About to send 44 bytes to Kafka, request 2
+kafka: DEBUG: Reading response 2 from Kafka
+kafka: DEBUG: About to read 4 bytes from Kafka
+kafka: DEBUG: Read 4/4 bytes from Kafka
+kafka: DEBUG: About to read 427 bytes from Kafka
+kafka: DEBUG: Read 427/427 bytes from Kafka
+kafka: DEBUG: Broker metadata: [BrokerMetadata(nodeId=2, host='kafka-idb03.dev.viasatcloud.com', port=9092), BrokerMetadata(nodeId=1, host='kafka-idb02.dev.viasatcloud.com', port=9092), BrokerMetadata(nodeId=0, host='kafka-idb01.dev.viasatcloud.com', port=9092)]
+kafka: DEBUG: Topic metadata: [TopicMetadata(topic='testingTopic', error=0, partitions=[PartitionMetadata(topic='testingTopic', partition=2, leader=0, replicas=(0, 2), isr=(0, 2), error=0), PartitionMetadata(topic='testingTopic', partition=5, leader=0, replicas=(0, 1), isr=(0, 1), error=0), PartitionMetadata(topic='testingTopic', partition=4, leader=2, replicas=(2, 0), isr=(2, 0), error=0), PartitionMetadata(topic='testingTopic', partition=7, leader=2, replicas=(2, 1), isr=(2, 1), error=0), PartitionMetadata(topic='testingTopic', partition=1, leader=2, replicas=(2, 1), isr=(2, 1), error=0), PartitionMetadata(topic='testingTopic', partition=3, leader=1, replicas=(1, 2), isr=(1, 2), error=0), PartitionMetadata(topic='testingTopic', partition=6, leader=1, replicas=(1, 0), isr=(1, 0), error=0), PartitionMetadata(topic='testingTopic', partition=0, leader=1, replicas=(1, 0), isr=(1, 0), error=0)])]
+kafka: DEBUG: Reinitializing socket connection for kafka-idb02.dev.viasatcloud.com:9092
+kafka: DEBUG: About to send 100 bytes to Kafka, request 3
+kafka: DEBUG: Reading response 3 from Kafka
+kafka: DEBUG: About to read 4 bytes from Kafka
+kafka: DEBUG: Read 4/4 bytes from Kafka
+kafka: DEBUG: About to read 80 bytes from Kafka
+kafka: DEBUG: Read 80/80 bytes from Kafka
+kafka: DEBUG: Reinitializing socket connection for kafka-idb01.dev.viasatcloud.com:9092
+kafka: DEBUG: About to send 84 bytes to Kafka, request 4
+kafka: DEBUG: Reading response 4 from Kafka
+kafka: DEBUG: About to read 4 bytes from Kafka
+kafka: DEBUG: Read 4/4 bytes from Kafka
+kafka: DEBUG: About to read 62 bytes from Kafka
+kafka: DEBUG: Read 62/62 bytes from Kafka
+kafka: DEBUG: Reinitializing socket connection for kafka-idb03.dev.viasatcloud.com:9092
+kafka: DEBUG: About to send 100 bytes to Kafka, request 5
+kafka: DEBUG: Reading response 5 from Kafka
+kafka: DEBUG: About to read 4 bytes from Kafka
+kafka: ERROR: Unable to receive data from Kafka
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/kafka/conn.py", line 93, in _read_bytes
+    data = self._sock.recv(min(bytes_left, 4096))
+timeout: timed out
+kafka: DEBUG: Closing socket connection for kafka-idb03.dev.viasatcloud.com:9092
+kafka: WARNING: Could not receive response to request [000000600002000000000005000c6b61666b612d707974686f6effffffff00000001000c74657374696e67546f7069630000000300000001ffffffffffffffff0000000100000004ffffffffffffffff0000000100000007ffffffffffffffff00000001] from server <KafkaConnection host=kafka-idb03.dev.viasatcloud.com port=9092>: Kafka @ kafka-idb03.dev.viasatcloud.com:9092 went away
+--------------------- >> end captured logging << ---------------------
+
+----------------------------------------------------------------------
+Ran 1 test in 120.153s
+
+FAILED (errors=1)

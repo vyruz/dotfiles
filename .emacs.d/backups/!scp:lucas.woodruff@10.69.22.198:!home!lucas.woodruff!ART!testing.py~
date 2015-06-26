@@ -1,0 +1,55 @@
+from Commands import SSHExecutor
+import pprint
+import pxssh, paramiko
+
+# device = '10.247.107.16'
+# username = 'admin'
+# password = 'admin
+
+
+device = '10.67.218.63'
+username = 'lucas.woodruff'
+password = 'Firewin22'
+
+# executor = paramiko.SSHClient()
+# executor.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+# executor.load_system_host_keys()
+# try:        
+#     executor.connect(device, username=username, password=password)
+# except paramiko.AuthenticationException as e:
+#     executor.connect(device)
+# i, o, e = executor.exec_command('vgd')
+# print o.readlines()
+# print e.readlines()
+
+executor = pxssh.pxssh()
+executor.login(device, username, password, auto_prompt_reset=False)
+executor.PROMPT = r"[#$]"
+
+# executor.sendline("shell")
+# executor.prompt(timeout=5)
+# print executor.before
+
+# executor.prompt(timeout=2)
+# executor.sendline("df")
+# executor.prompt()
+# print executor.before
+       
+executor.sendline("cd /luke || echo $?")
+executor.prompt()
+print executor.before
+print executor.match
+#print executor.after
+
+# executor.prompt(timeout=2)
+# executor.sendline('echo $?')
+# executor.prompt()   
+# print executor.before
+# print executor.match
+#print executor.before.strip()
+# print executor.before.replace("echo","",1)
+#retval = executor.before.replace("echo $?", "", 1)
+#print "\n%s" %retval
+# executor.sendline("df")
+# executor.prompt(timeout=5)
+# print executor.before

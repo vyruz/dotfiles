@@ -1,0 +1,52 @@
+from omni import OmnibusDriver
+from consumer_producer import Consumer, Producer
+import json, logging, database, threading
+from time import sleep
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__) 
+
+DB_NAME = "art_dev"
+USERNAME = "postgres"
+PASSWORD = "secret"
+HOSTNAME = "10.69.22.199"
+
+class AlertServerManager(threading.Thread):
+    """
+    Reads events from the omnibus server and sends them to the kafka cluster
+    so that an EventReader can process them. Also capable of updating omnibus
+    """
+    def __init__(self, kafkaEndpoint, omniServer, omniPort, omniUser, omniPass):
+        logger.info('creating AlertServerManager')
+        threading.Thread.__init__(self)
+        self.producer = Producer(kafkaEndpoint)
+        self.dbHandler = database.create_handler(DB_NAME, USERNAME, password = PASSWORD, host=HOSTNAME)
+        self.omniDriver = OmnibusDriver(omniServer, omniPort, omniUser, omniPass)
+        logger.info('AlertServerManager created')
+
+    def get_alert_info(self, alert):
+        pass
+    def update_alert(self, alert, status):
+        pass
+    def produce(self, message, topic='testEvents'):
+        self.producer.produce(topic, message)
+
+    def run(self):
+        logger.info('AlertServerManager starting')
+        while True:
+            EventIds = self.omniDriver.query("select Agent, AlertGroup from alerts.status where methodProcedure != '' and methodProcedure !='NOT_FOUND';")
+            EventIds = json.loads(EventIds)['rowset']['rows']            
+            for event in EventIds:
+                Id = event['Agent'] + event['AlertGroup']
+                self.produce(Id)
+            sleep(60)
+            
+
+if __name__=="__main__":
+    from pprint import pprint
+    TESTHOST = "10.69.22.152"
+    asm = AlertServerManager(TESTHOST, '10.69.20.76', '8080', 'nmsadmin', 'nmsadmin')
+    #asm.start()
+    eids = asm.omniDriver.query("select Agent, AlertGroup, AlertKey, methodProcedure from alerts.status where methodProcedure != '' and methodProcedure !='NOT_FOUND';")
+    eids = json.loads(eids)['rowset']['rows']
+    pprint(eids)

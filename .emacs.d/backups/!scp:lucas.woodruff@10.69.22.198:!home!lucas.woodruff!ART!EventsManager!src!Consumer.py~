@@ -1,0 +1,38 @@
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
+
+from kafka.client import KafkaClient
+from kafka.consumer import SimpleConsumer
+class Consumer:
+    """
+    A Consumer reads messages of the specified off a kafka cluster on the given host
+    """
+
+    def __init__(self, host, group, topic):
+        # due to unicode_literals from __future__  convert topic to utf8
+        logger.info('creating a Consumer')
+        topic = topic.encode('utf-8')
+        group = group.encode('utf-8')
+        self.client = KafkaClient(host, timeout=60) 
+        try:
+            self.consumer = SimpleConsumer(self.client, group, topic, auto_commit=True)
+        except FailedPayloadsError: 
+            # sometimes there is a timeout when creating consumer
+            # when that happens just retry creation 
+            logger.warning('failed to create consumer, retrying')
+            self.consumer = SimpleConsumer(self.client, group, topic, auto_commit=True)
+        logger.info('Consumer created')
+
+
+    def consume(self):
+        # returns the next message in the kafka queue        
+        #try:
+        logger.info('consuming message from kafka')
+        message = self.consumer.get_message(timeout=None) 
+        logger.debug('message: %s' % str(message))
+        self.consumer.commit() # update offset
+        return message
+
+    def getConsumer(self):
+        return self.consumer     

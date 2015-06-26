@@ -1,0 +1,8 @@
+from setuptools import setup
+
+setup(
+    name="commands",
+    packages=["commands"],
+    package_dir={'Pipeline': 'src'},
+    install_requires=["pexpect"]
+)

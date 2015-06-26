@@ -1,0 +1,124 @@
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
+
+from schema import *
+import pxssh, threading, database, logging
+from time import sleep
+from random import randint
+from pprint import pprint
+from command_helpers import *
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+DB_NAME = "art_dev"
+USERNAME = "postgres"
+PASSWORD = "secret"
+HOSTNAME = "10.69.22.199"
+
+class RuleExecutor:
+    """
+    A RuleExecutor executes rules for a certain type of method (SSH, SNMP, etc). Each method will
+    have a have a different communication mechanism that governs how actually performs the command.
+    """
+    def execute(self, rule):
+        raise NotImplementedError("This must be implemented by a subclasses of RuleExecutor")
+
+class RuleExecutorFactory:
+    def create_rule_executor(rule):
+        return None
+
+class SSHExecutor(RuleExecutor):
+    def __init__(self, host, user, password):
+        logger.info('creating SSHExecutor')
+        self.executor = pxssh.pxssh()
+        self.executor.login(host, user, password)
+        logger.info('SSHExecutor created')
+    
+    def execute(self, command):
+        # sends a command string over the pxssh object executor
+        # returns a tuple with the return code and the console output as strings
+        logger.info('executing command via ssh')
+        logger.debug('command: %s' % command)
+        self.executor.sendline(command) # run command
+        self.executor.prompt() # match the prompt
+        retstring = ""
+        if self.executor.before:
+            retstring = self.executor.before.replace(command, "", 1)
+        logger.debug('Received: %s' % retstring)
+        self.executor.sendline("echo $?")
+        self.executor.prompt()
+        retval = False
+        if self.executor.before:
+            retval = self.executor.before.replace("echo $?", "", 1)        
+        logger.info('command executed, returning output')
+        return (int(retval), retstring) 
+
+    def __del__(self):
+        self.executor.logout()
+
+class RecipeExecutor(threading.Thread):
+    """
+    A recipe executor consumes events from a kafka queue, which is an eventID. 
+    It gets then gets the recipe tree, and starts executing from the first recipe
+    """
+    def __init__(self, host, topic, group = "recipeExecutor"):
+        logger.info('creating RecipeExecutor')
+        Thread.__init__(self)
+        self.consumer = Consumer(endpoint, group, topic)
+        self.dbHandler = database.create_handler(DB_NAME,USERNAME, password=PASSWORD, host=HOSTNAME)
+        logger.info('RecipeExecutor created')
+
+    def process_recipe(self, recipe):
+        logger.info('processing recipe')
+        pass
+    def execute_rule(self,procedure, method, device):
+        """
+        execute command on the given device
+
+        Parameters
+        ----------
+        procedure: Command to be run
+        method: How the command will be executed (ie SSH, SNMP)
+        device: Device the procedure will be executed on
+        """
+        pass
+    def report_result(self):
+        pass
+
+    def get_job(self):
+        #returns eventID of job waiting to be executed
+        logger.info('getting job')
+        message = self.consumer.consume()
+        if message is not None:
+            return message[1][3] # return the eventId of the event
+        else:
+            return None
+    
+    def run(self):
+        while True:
+            eventID = self.get_job()
+            if eventID is not None:
+                logger.info('generating recipe tree')
+                recipeTree = self.dbHandler.generate_recipe_tree(eventID)
+                firstRecipe = recipeTree[0][0]
+                self.process_recipe(firstRecipe)
+            else:
+                logger.info('no job available, sleeping for 10 seconds')
+                sleep(10)
+            
+
+if __name__ == "__main__":
+    dbHandler = database.create_handler(DB_NAME,USERNAME, password=PASSWORD, host=HOSTNAME)
+    num = randint(0,1000)
+    e = Event(num,"event"+str(num), 1, "10.69.22.199")
+    rID = randint(0,100000)
+    rule = Rule(rID, "SSH", "ls -Al")
+    recipe = RecipeStep(randint(0,100000), num, rID, 0, 0)
+    dbHandler.insert(e)
+    dbHandler.insert(rule)
+    dbHandler.insert(recipe)
+    dbHandler.commit()
+    dbHandler.query("select * from Event;")
+    pprint(dbHandler.get_results())

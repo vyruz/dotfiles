@@ -1,0 +1,78 @@
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
+
+from consumer_producer import Consumer, Producer
+from time import sleep
+import database, threading, logging
+from omni import OmnibusDriver
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+DB_NAME = "art_dev"
+USERNAME = "postgres"
+PASSWORD = "secret"
+HOSTNAME = "10.69.22.199"
+
+class EventReader(threading.Thread):
+    """
+    An event reader reads (consumes) events from a kafka cluster and checks if
+    the event is one that is automated, ie one that has a recipe assosiated with it.
+    If so the recipe is added to a queue (also a kafka cluster) of tasks ready to be executed.
+    """
+    #daemon = True
+
+    def __init__(self, endpoint, topic, group = "EventReader"):
+        logger.info('creating EventReader')
+        threading.Thread.__init__(self)
+        self.consumer = Consumer(endpoint, group, topic)
+        self.queue = Producer(endpoint)
+        self.dbHandler = database.create_handler(DB_NAME, USERNAME, password = PASSWORD, host=HOSTNAME)
+        logger.info('EventReader created')
+
+    def consume(self):
+        return self.consumer.consume()
+
+    def add_task(self, task, topic = "testTasks"):   
+        # add task (which is an event id) to queue of waiting to be executed tasks
+        logger.info('adding task to queue')
+        self.queue.produce(topic, task)
+
+    def add_alert(self, alert, topic = "testAlerts"):        
+        logger.info('adding alert to kafka')
+        self.queue.produce(topic, alert)
+
+
+    def run(self):
+        """
+        Consume event from kafka, in which the message is an eventID. If this event is 
+        one we know how to automate we add the task to a kafka queue, also an eventID
+        """
+        logger.info('EventReader has begun running')
+        while True:
+            message = self.consume()
+            if message is not None:
+                eventID = message[1][3]
+                logger.debug('eventID: %s' % str(eventID))
+                logger.info('querying if event is one that is automated')
+                #self.dbHandler.query("select eventId from Event where eventId = '%s' and automated = 1;" % eventID)
+                self.dbHandler.query("select eventId from Event;")
+                eventID = self.dbHandler.get_results() # get_results returns a list
+                if eventID:
+                    self.add_task(eventID[0][0]) # get the id from that list
+            else:
+                secs = 30
+                logger.info('message is blank, sleeping for %d seconds' % secs)
+                sleep(secs)           
+
+
+if __name__=="__main__":
+    host = '10.69.22.152'
+    topic = 'testEvents'
+    logger.debug('debug')
+    t1 = EventReader(host, topic)
+    #t2 = EventReader(host, topic)
+    t1.start()
+    #t2.start()

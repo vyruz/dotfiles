@@ -1,0 +1,3 @@
+from kafka.consumer import SimpleConsumer
+from kafka.client import KafkaClient
+kafka = KafkaClient("10.69.22.152")

@@ -1,0 +1,19 @@
+[lucas.woodruff@intern01 ~]$ tsql -S 10.67.218.63 -U nmsadmin
+Password: 
+locale is "en_US.UTF-8"
+locale charset is "UTF-8"
+using default charset "UTF-8"
+Error 20009 (severity 9):
+	Unable to connect: Adaptive Server is unavailable or does not exist
+	OS error 111, "Connection refused"
+There was a problem connecting to the server
+[lucas.woodruff@intern01 ~]$ tsql -S 10.67.166.71 -U nmsadmin
+Password: 
+locale is "en_US.UTF-8"
+locale charset is "UTF-8"
+using default charset "UTF-8"
+Error 20009 (severity 9):
+	Unable to connect: Adaptive Server is unavailable or does not exist
+	OS error 111, "Connection refused"
+There was a problem connecting to the server
+[lucas.woodruff@intern01 ~]$ 

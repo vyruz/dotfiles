@@ -1,0 +1,7 @@
+from Commands import *
+
+device = '10.67.218.63'
+username = 'nmsadmin'
+password = username
+executor = SSHExecutor(device, username, password)
+load_commands_from_file("configs/commands.yaml")

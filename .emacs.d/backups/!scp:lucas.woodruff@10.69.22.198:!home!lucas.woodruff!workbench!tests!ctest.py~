@@ -1,0 +1,17 @@
+from consumer_producer import Consumer, Producer
+from random import randint
+
+TESTTOPIC = "testingTopic"
+TESTHOST = "10.69.22.152"
+TESTGROUP = "testGroup"
+
+print('in test_produce_consume')
+p = Producer(TESTHOST)
+message = str(randint(0,10000))
+p.produce(TESTTOPIC, message)
+c = Consumer(TESTHOST, TESTGROUP, TESTTOPIC)
+c.consumer.seek(0,2)
+m = c.consume()
+#assert m[1][3] == message
+print message
+print m[1][3]

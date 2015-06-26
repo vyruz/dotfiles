@@ -1,0 +1,43 @@
+import paramiko
+import time
+import re
+
+ip = "10.247.107.16"
+username = "admin"
+password = "admin"
+ip = "10.67.218.63"
+username="nmsadmin"
+password="nmsadmin"
+
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy( paramiko.AutoAddPolicy() )
+ssh.connect(ip, username = username, password = password)
+
+chan = ssh.invoke_shell()
+chan.settimeout(10)
+
+# Send the shell command
+chan.send("shell\n")
+
+buff = ''
+while not buff.endswith('$ '):
+    resp = chan.recv(9999)
+    buff += resp
+
+print("\"shell\" executed succesfully")
+
+def run_cmd(cmd):
+    chan.send(cmd + '\n')
+    print("Sent command: " + cmd)
+
+    buff = ''
+    while not buff.endswith('$ '):
+        resp = chan.recv(9999)
+        buff += resp
+        print("Second response:\n" + resp)
+
+
+    print('command was successful:' + str(buff))
+
+cmd='ls'
+run_cmd(cmd)
