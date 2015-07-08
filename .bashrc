@@ -5,7 +5,7 @@
 #source ~/.bash_profile
 #source ~/.profile
 
-source ~/git-completion.bash
+#source ~/git-completion.bash
 
 alias sag='sudo apt-get'
 alias sagi='sudo apt-get install'
@@ -97,8 +97,8 @@ esac
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
 
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
@@ -139,6 +139,6 @@ source "${GITAWAREPROMPT}/main.sh"
 #export PS1="\${debian_chroot:+(\$debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
 #export PS1="\${debian_chroot:+(\$debian_chroot)}\[[\033[01;32m\]\h:\w\[\033[00m\]] \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\n\$ "
 #export PS1="\${debian_chroot:+(\$debian_chroot)}\[\033[01;32m\]\h \[$txtrst\]: \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty \[$txtrst\]\w\[\033[00m\] \[$txtrst\]\n[\[\033[01;32m\]\$?\[$txtrst\]] \$ "
-export PS1="\${debian_chroot:+(\$debian_chroot)}\[\033[01;32m\]\h \[$txtrst\]: \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty \[$txtrst\]\w\[\033[00m\] \[$txtrst\]\n[\[$txtylw\]\$?\[$txtrst\]] \$ "
-
+#export PS1="\${debian_chroot:+(\$debian_chroot)}\[\033[01;32m\]\h \[$txtrst\]: \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty \[$txtrst\]\w\[\033[00m\] \[$txtrst\]\n[\[$txtylw\]\$?\[$txtrst\]] \$ "
+export PS1="\${debian_chroot:+(\$debian_chroot)}\[\033[01;32m\]\h \[$txtrst\]: \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty \[$txtrst\]\w\[\033[00m\] \[$txtrst\]\n[\[$txtylw\]\$?\[$txtrst\]] → \[$txtrst\] "
 
