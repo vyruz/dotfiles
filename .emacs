@@ -59,7 +59,7 @@
   t)
 ;; you can select the key you prefer to
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
-
+(define-key global-map (kbd "C-c l") 'ace-jump-line-mode)
 
 
 ;; 
