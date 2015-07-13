@@ -14,7 +14,9 @@ alias aptcs='apt-cache search'
 alias free='free -m'
 alias mkdir='mkdir -p'
 alias df='df -h'
+
 alias gpush='git push origin'
+alias gpatch='git add --patch'
 
 alias devm='ssh lucas.woodruff@10.69.22.198'
 alias nmsm='ssh lucas.woodruff@10.67.218.63'
@@ -136,9 +138,6 @@ fi
 
 export GITAWAREPROMPT=~/.bash/git-aware-prompt
 source "${GITAWAREPROMPT}/main.sh"
-#export PS1="\${debian_chroot:+(\$debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
-#export PS1="\${debian_chroot:+(\$debian_chroot)}\[[\033[01;32m\]\h:\w\[\033[00m\]] \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\n\$ "
-#export PS1="\${debian_chroot:+(\$debian_chroot)}\[\033[01;32m\]\h \[$txtrst\]: \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty \[$txtrst\]\w\[\033[00m\] \[$txtrst\]\n[\[\033[01;32m\]\$?\[$txtrst\]] \$ "
 #export PS1="\${debian_chroot:+(\$debian_chroot)}\[\033[01;32m\]\h \[$txtrst\]: \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty \[$txtrst\]\w\[\033[00m\] \[$txtrst\]\n[\[$txtylw\]\$?\[$txtrst\]] \$ "
 export PS1="\${debian_chroot:+(\$debian_chroot)}\[\033[01;32m\]\h \[$txtrst\]: \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty \[$txtrst\]\w\[\033[00m\] \[$txtrst\]\n[\[$txtylw\]\$?\[$txtrst\]] → \[$txtrst\] "
 
