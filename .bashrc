@@ -14,6 +14,8 @@ alias aptcs='apt-cache search'
 alias free='free -m'
 alias mkdir='mkdir -p'
 alias df='df -h'
+alias ..='cd ..'
+alias ...='cd ../..'
 
 alias gpush='git push origin'
 alias gpatch='git add --patch'
