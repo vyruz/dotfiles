@@ -46,7 +46,9 @@
 (tool-bar-mode -1)
 
 (require 'auto-install)
-(crosshairs-mode)
+(crosshairs-mode 1)
+(setq col-highlight-vline-face-flag  t
+      col-highlight-face             hl-line-face)
 
 ;;
 ;; ace jump mode major function
