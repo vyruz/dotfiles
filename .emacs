@@ -16,7 +16,8 @@
 (setq auto-save-file-name-transforms
       `((".*" ,"~/.emacs.d/backups")))
 
-(add-to-list 'load-path "~/.emacs.d")
+;; (add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
 (require 'auto-complete)
 (require 'auto-complete-config)
 (global-auto-complete-mode t)
@@ -34,6 +35,7 @@
   (find-file "/lucas.woodruff@10.69.22.198:"))
 
 (setq column-number-mode t)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -52,9 +54,8 @@
 (setq col-highlight-vline-face-flag  t
       col-highlight-face             hl-line-face)
 
-;;
 ;; ace jump mode major function
-;; 
+;;
 (add-to-list 'load-path "/full/path/where/ace-jump-mode.el/in/")
 (autoload
   'ace-jump-mode
@@ -66,7 +67,7 @@
 (define-key global-map (kbd "C-c l") 'ace-jump-line-mode)
 
 
-;; 
+;;
 ;; enable a more powerful jump back function from ace jump mode
 ;;
 (autoload
@@ -82,3 +83,5 @@
 ;; (define-key viper-vi-global-user-map (kbd "SPC") 'ace-jump-mode)
 ;; ;;If you use evil
 ;; (define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
+
+(add-hook 'python-mode-hook 'column-enforce-mode)
