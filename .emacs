@@ -85,3 +85,4 @@
 ;; (define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
 
 (add-hook 'python-mode-hook 'column-enforce-mode)
+(add-hook 'org-mode-hook 'column-enforce-mode)
